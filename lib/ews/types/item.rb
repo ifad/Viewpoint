@@ -241,8 +241,14 @@ module Viewpoint::EWS::Types
       dispatch_create_item! msg
     end
 
-
-    private
+    # Accepts the current item - used for meeting requests
+    def accept_item opts={}
+      msg = Template::AcceptItem.new opts.clone
+      yield msg if block_given?
+      msg.reference_item_id = { id: self.id, change_key: self.change_key }
+      msg.ews_type = :accept_item
+      dispatch_create_item! msg
+    end
 
     def key_paths
       super.merge(ITEM_KEY_PATHS)

@@ -848,6 +848,14 @@ module Viewpoint::EWS::SOAP
       }
     end
 
+    def accept_item!(item)
+      nbuild[NS_EWS_TYPES].AcceptItem {
+        item.each_pair {|k,v|
+          self.send("#{k}!", v)
+        }
+      }
+    end
+
     def reference_item_id!(id)
       nbuild[NS_EWS_TYPES].ReferenceItemId {|x|
         x.parent['Id'] = id[:id]
